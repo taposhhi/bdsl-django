@@ -175,7 +175,7 @@ except Exception as e:
 # ================================================================
 print("⏳ Loading Bangla lemmatizer model...")
 _tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_DIR)
-_model     = AutoModelForSeq2SeqLM.from_pretrained(MODEL_DIR)
+_model     = AutoModelForSeq2SeqLM.from_pretrained(MODEL_DIR, dtype=torch.float16)
 _model.eval()
 _device = torch.device("cpu")
 _model.to(_device)
