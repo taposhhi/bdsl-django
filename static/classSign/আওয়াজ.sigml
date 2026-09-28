@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="আওয়াজ">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamceeall/>                        <hamthumbopenmod/>                        <hamfingerstraightmod/>                        <hamextfingerl/>                        <hambetween/>                        <hamextfingeru/>                        <hampalmd/>                        <hamear/>                        <hambetween/>                        <hamshouldertop/>                        <hamclose/>                        <hamreplace/>                        <hamceeall/>                        <hamfingerstraightmod/>                        <hamrepeatfromstartseveral/>                </hamnosys_manual>        </hns_sign>
+</sigml>

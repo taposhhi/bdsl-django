@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="পছন্দকরা">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamfinger2345/>                        <hamthumboutmod/>                        <hambetween/>                        <hamfinger2345/>                        <hamfingerhookmod/>                        <hamthumbacrossmod/>                        <hamextfingeru/>                        <hampalml/>                        <hambetween/>                        <hampalmdl/>                        <hamshoulders/>                        <hamreplace/>                        <hampinchall/>                        <hamextfingerl/>                        <hampalml/>                        <hamshoulders/>                        <hamseqbegin/>                        <hamtouch/>                        <hamfingernail/>                        <hamseqend/>                </hamnosys_manual>        </hns_sign>
+</sigml>

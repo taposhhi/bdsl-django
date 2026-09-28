@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="">
+<hamnosys_nonmanual>
+<hnm_mouthgesture tag="T14"/>\t</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamfinger2/>
+<hamthumbacrossmod/>
+<hamextfingeru/>
+<hambetween/>
+<hamextfingeri/>
+<hampalmd/>
+<hamtongue/>
+<hamseqbegin/>
+<haminterlock/>
+<hamfingertip/>
+<hamindexfinger/>
+<hamseqend/>
+<hamparbegin/>
+<hammoveo/>
+<hamsmallmod/>
+<hammover/>
+<hamparend/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

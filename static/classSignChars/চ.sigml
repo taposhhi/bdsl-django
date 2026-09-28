@@ -1,0 +1,40 @@
+
+<hns_sign gloss="agree">
+	<hamnosys_nonmanual>
+	</hamnosys_nonmanual>
+	<hamnosys_manual>
+		<hamparbegin/>
+		<hamfinger2/>
+		<hamfingerstraightmod/>
+		<hamplus/>
+		<hamcee12/>
+		<hamfingerstraightmod/>
+		<hamparend/>
+
+
+		<hamparbegin/>
+		<hamextfingerl/>
+		<hampalmd/>
+		<hamplus/>
+		<hamextfingerur/>
+		<hampalmd/>
+		<hamparend/>
+
+		<hamparbegin/>
+
+		<hamindexfinger/>
+		<hammiddlefinger/>
+
+		<hamplus/>
+
+                <hamfingerside/>
+
+
+
+
+		<hamparend/>
+
+		<hamtouch/>
+		<hamshoulders/>
+	</hamnosys_manual>
+</hns_sign>

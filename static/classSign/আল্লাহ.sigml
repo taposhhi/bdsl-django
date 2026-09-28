@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="">
+<hamnosys_nonmanual>
+<hnm_head tag="NB"/>\t<hnm_eyegaze tag="UP"/>\t</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamflathand/>
+<hamfingerstraightmod/>
+<hambetween/>
+<hamflathand/>
+<hamextfingeru/>
+<hambetween/>
+<hamextfingerur/>
+<hampalmu/>
+<hamheadtop/>
+<hamlrat/>
+<hamclose/>
+<hamnomotion/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

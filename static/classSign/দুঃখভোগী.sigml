@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="দুঃখিত">                 <hamnosys_nonmanual>                     <hnm_mouthpicture picture="a_I"/>                 </hamnosys_nonmanual>                <hamnosys_manual>                        <hampinchall/>                        <hamextfingeru/>                        <hampalmul/>                        <hamshoulders/>                        <hammovei/>                        <hammovei/>                        <hamsmallmod/>                </hamnosys_manual>        </hns_sign>
+</sigml>

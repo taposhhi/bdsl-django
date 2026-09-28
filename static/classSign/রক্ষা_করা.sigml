@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="রক্ষা করা">
+<hamnosys_nonmanual>
+</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamflathand/>
+<hamthumboutmod/>
+<hambetween/>
+<hamflathand/>
+<hamthumboutmod/>
+<hamfingerbendmod/>
+<hamextfingeri/>
+<hambetween/>
+<hamextfingerl/>
+<hampalmr/>
+<hamshoulders/>
+<hambetween/>
+<hamchest/>
+<hamclose/>
+<hamreplace/>
+<hamflathand/>
+<hamthumboutmod/>
+<hamextfingeru/>
+<hambetween/>
+<hamextfingerul/>
+<hampalmd/>
+<hammovel/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="চিবানো">        <hamnosys_nonmanual>            <hnm_mouthgesture tag="L25"/>\t            <hnm_mouthgesture tag="L25"/>\t        </hamnosys_nonmanual>        <hamnosys_manual>            <hampinchall/>            <hambetween/>            <hampinchall/>            <hamfingerstraightmod/>            <hamextfingeru/>            <hambetween/>            <hamextfingero/>            <hampalmu/>            <hamchin/>            <hamlrat/>            <hamclose/>        </hamnosys_manual>    </hns_sign>
+</sigml>

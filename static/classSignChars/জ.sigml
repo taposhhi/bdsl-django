@@ -1,0 +1,27 @@
+
+
+<hamgestural_sign gloss="chairman1">
+  <sign_manual both_hands="true" lr_symm="true">
+    <split_handconfig>
+      <handconfig handshape="fist" thumbpos="out"/>
+      <handconfig handshape="finger2" second_handshape="finger2" second_mainbend="hooked" second_thumbpos="opposed" thumbpos="opposed"/>
+    </split_handconfig>
+    <split_handconfig>
+      <handconfig extfidir="ol" palmor="l"/>
+      <handconfig extfidir="ur" palmor="d"/>
+    </split_handconfig>
+
+
+    <split_location>
+      <location_bodyarm location="stomatch"/>
+      <location_bodyarm location="stomach"/>
+    </split_location>
+    <handconstellation contact="touch">
+       <location_hand location="ball"/>
+      <location_hand digits="2" location="nail"/>
+      </handconstellation>
+
+  </sign_manual>
+</hamgestural_sign>
+
+

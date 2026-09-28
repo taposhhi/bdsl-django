@@ -1,0 +1,48 @@
+
+
+	<hns_sign gloss="K">
+		<hamnosys_nonmanual>
+			<hnm_mouthpicture picture="ke_I"/>
+		</hamnosys_nonmanual>
+		<hamnosys_manual>
+<hamparbegin/>
+			<hamcee12/>
+			<hamfingerstraightmod/>
+			<hamplus/>
+			<hamcee12/>
+			<hamfingerstraightmod/>
+			<hamparend/>
+
+
+<hamparbegin/>
+		<hamextfingeru/>
+
+		<hampalmul/>
+		<hamplus/>
+		<hamextfingeru/>
+		<hampalmr/>
+		<hamparend/>
+
+
+<hamparbegin/>
+
+		<hamindexfinger/>
+
+		<hamplus/>
+		<hamindexfinger/>
+
+		<hamparend/>
+
+<hamtouch/>
+
+
+
+
+
+
+
+
+</hamnosys_manual>
+
+</hns_sign>
+

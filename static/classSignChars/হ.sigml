@@ -1,0 +1,30 @@
+
+<hns_sign gloss="l">
+	<hamnosys_nonmanual>
+	</hamnosys_nonmanual>
+	<hamnosys_manual>
+		<hamparbegin/>
+
+		<hamfinger2345/>
+
+		<hamplus/>
+		<hamfinger2345/>
+
+		<hamparend/>
+		<hamparbegin/>
+		<hamextfingerol/>
+		<hampalmd/>
+		<hamplus/>
+		<hamextfingeror/>
+		<hampalmu/>
+		<hamparend/>
+		<hamparbegin/>
+		<hampalm/>
+		<hamplus/>
+		<hampalm/>
+		<hamparend/>
+		<hamtouch/>
+		<hamstomach/>
+		<hamclose/>
+	</hamnosys_manual>
+</hns_sign>

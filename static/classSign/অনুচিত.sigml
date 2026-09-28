@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="অনুচিত">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamfinger2/>                        <hamthumbacrossmod/>                        <hamextfingeru/>                        <hampalml/>                        <hamneck/>                        <hambetween/>                        <hamshouldertop/>                        <hammovel/>                        <hamarcr/>                </hamnosys_manual>        </hns_sign>
+<hns_sign gloss="অনুচিত">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamfinger2345/>                        <hamthumboutmod/>                        <hamextfingeru/>                        <hampalml/>                        <hamshoulders/>                        <hamreplace/>                        <hamextfingeru/>                        <hampalml/>                        <hambetween/>                        <hampalmul/>                        <hamrepeatfromstartseveral/>                </hamnosys_manual>        </hns_sign>
+</sigml>

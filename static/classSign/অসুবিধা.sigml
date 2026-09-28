@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="অসুবিধা">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamcee12/>                        <hamextfingerl/>                        <hampalml/>                        <hammoveu/>                        <hamforehead/>                        <hamseqbegin/>                        <hamtouch/>                        <hamfingertip/>                        <hamindexfinger/>                        <hamseqend/>                        <hamslow/>                </hamnosys_manual>        </hns_sign>
+</sigml>

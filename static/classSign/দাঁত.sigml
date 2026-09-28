@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="">
+<hamnosys_nonmanual>
+<hnm_mouthpicture picture="eeeeeeee"/>\t</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamfinger2/>
+<hamthumbacrossmod/>
+<hamextfingerl/>
+<hampalml/>
+<hamlips/>
+<hambetween/>
+<hamchin/>
+<hamclose/>
+<hamnomotion/>
+<hammoveu/>
+<hamsmallmod/>
+<hammoved/>
+<hamsmallmod/>
+<hammoveu/>
+<hamsmallmod/>
+<hammoved/>
+<hamsmallmod/>
+<hamnomotion/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

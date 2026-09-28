@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="অনুনয়">
+<hamnosys_nonmanual>
+<hnm_head tag="NF"/>
+<hnm_head tag="NO"/>
+<hnm_head tag="NO"/>
+<hnm_eyebrows tag="RB"/>
+<hnm_mouthgesture tag="L29"/>
+<hnm_mouthgesture tag="L29"/>
+</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamsymmpar/>
+<hamflathand/>
+<hamextfingero/>
+<hampalml/>
+<hamparbegin/>
+<hamfingerpad/>
+<hamplus/>
+<hamfingerpad/>
+<hamparend/>
+<hamtouch/>
+<hamshoulders/>
+<hambetween/>
+<hamstomach/>
+<hamparbegin/>
+<hamparbegin/>
+<hammoveo/>
+<hamsmallmod/>
+<hamplus/>
+<hammovei/>
+<hamsmallmod/>
+<hamparend/>
+<hamrepeatreverse/>
+<hamparend/>
+<hamrepeatfromstartseveral/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

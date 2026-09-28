@@ -1,0 +1,948 @@
+{% load static %}
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BDSL — Bangla Sign Language Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Noto+Sans+Bengali:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="http://vhg.cmp.uea.ac.uk/tech/jas/vhg2021/cwa/cwasa.css"/>
+
+  <style>
+    :root {
+      --bg:              #f4f3ef;
+      --surface:         #ffffff;
+      --surface2:        #f0eeea;
+      --surface3:        #e9e7e2;
+      --border:          rgba(0,0,0,0.07);
+      --border-md:       rgba(0,0,0,0.13);
+      --text:            #181818;
+      --text-2:          #666;
+      --text-3:          #aaa;
+      --ink:             #111;
+      --accent:          #1a5cff;
+      --accent-bg:       rgba(26,92,255,0.06);
+      --accent-border:   rgba(26,92,255,0.18);
+      --success:         #0a8a5f;
+      --success-bg:      rgba(10,138,95,0.07);
+      --success-border:  rgba(10,138,95,0.22);
+      --danger:          #cc2c2c;
+      --r:               10px;
+      --r-lg:            16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Syne', 'Noto Sans Bengali', sans-serif;
+      background: #dedad4;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app-shell {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      border: 1px solid rgba(0,0,0,0.16);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.55) inset,
+        0 12px 48px rgba(0,0,0,0.14),
+        0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    /* ══ HEADER ══════════════════════════════════════════════ */
+    header {
+      height: 54px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      width: 32px; height: 32px;
+      background: var(--ink);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+
+    .hd-title { font-size: 13.5px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+    .hd-sub   { font-size: 10px; color: var(--text-3); font-family: 'DM Mono', monospace; margin-top: 1px; }
+
+    .hd-pill {
+      margin: 0 auto;
+      display: flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border-md);
+      border-radius: 20px; padding: 4px 12px 4px 9px;
+      font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-2);
+    }
+
+    .hd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); transition: background .2s; }
+    .hd-dot.on { background: var(--success); animation: blink 1.3s infinite; }
+
+    .hd-badge {
+      font-size: 10px; font-family: 'DM Mono', monospace;
+      color: var(--text-3); background: var(--surface2);
+      border: 1px solid var(--border-md); padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* ══ LAYOUT ═══════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      /* left controls | avatar (takes all spare space) | emotion sidebar */
+      grid-template-columns: 380px 1fr 300px;
+      overflow: hidden;
+    }
+
+    /* ══ LEFT PANEL ═══════════════════════════════════════════ */
+    .left {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .left::-webkit-scrollbar { width: 3px; }
+    .left::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+
+    .psec {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .psec:last-child { border-bottom: none; }
+
+    .slabel {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 11px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .slabel::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+    /* Textarea */
+    .input-wrap { position: relative; }
+
+    textarea {
+      width: 100%; padding: 13px 13px 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      color: var(--text);
+      font-family: 'Noto Sans Bengali', 'Syne', sans-serif;
+      font-size: 15px; line-height: 1.75; resize: none; height: 105px;
+      transition: border-color .15s;
+      display: block;
+    }
+    textarea:focus { outline: none; border-color: var(--border-md); }
+    textarea::placeholder { color: var(--text-3); }
+
+    .char-float {
+      position: absolute; bottom: 9px; right: 11px;
+      font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--text-3);
+      pointer-events: none;
+    }
+
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 9px; }
+
+    .btn {
+      padding: 10px 13px; border-radius: var(--r);
+      border: 1px solid var(--border-md);
+      cursor: pointer; font-family: 'Syne', sans-serif;
+      font-weight: 600; font-size: 13px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: all .15s; background: var(--surface); color: var(--text);
+    }
+    .btn:hover  { background: var(--surface2); transform: translateY(-1px); }
+    .btn:active { transform: scale(0.975); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    .btn-primary { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .btn-primary:hover { background: #2a2a2a; }
+
+    .btn.listening { border-color: var(--danger); color: var(--danger); background: rgba(204,44,44,.04); animation: pring 1.4s infinite; }
+
+    @keyframes pring {
+      0%,100% { box-shadow: 0 0 0 0 rgba(204,44,44,.15); }
+      50%      { box-shadow: 0 0 0 5px rgba(204,44,44,0); }
+    }
+
+    /* Stat row */
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .stat {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 11px 13px;
+      position: relative; overflow: hidden;
+    }
+    .stat::before {
+      content:''; position: absolute; top:0; left:0; right:0; height:2px;
+      background: var(--border); border-radius: 2px 2px 0 0;
+    }
+    .stat.st-active::before { background: var(--accent); }
+    .stat.st-done::before   { background: var(--success); }
+
+    .stat .lbl {
+      font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+    .stat .val { font-size: 14px; font-weight: 600; color: var(--text); }
+    .stat .val.vplay { color: var(--accent); }
+    .stat .val.vdone { color: var(--success); }
+
+    /* Now playing */
+    .now-row {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 11px 13px; min-height: 48px;
+      transition: all .25s;
+    }
+    .now-row.active { border-color: var(--success-border); background: var(--success-bg); }
+
+    .now-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--surface3); flex-shrink: 0; transition: all .2s;
+    }
+    .now-dot.on { background: var(--success); box-shadow: 0 0 0 3px rgba(10,138,95,.18); animation: blink 1.2s infinite; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+    .now-word { font-size: 14.5px; font-weight: 500; font-family: 'Noto Sans Bengali', sans-serif; color: var(--text); flex: 1; }
+
+    .now-tag {
+      font-size: 9.5px; font-family: 'DM Mono', monospace; font-weight: 500;
+      color: var(--text-3); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 20px; padding: 2px 9px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .now-tag.t-sign  { color: var(--success); border-color: var(--success-border); background: var(--success-bg); }
+    .now-tag.t-spell { color: var(--accent);  border-color: var(--accent-border);  background: var(--accent-bg); }
+
+    /* Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .chip {
+      padding: 4px 11px; border-radius: 20px; font-size: 12px;
+      font-family: 'Noto Sans Bengali', sans-serif;
+      border: 1px solid var(--border); color: var(--text-3); background: transparent; transition: all .2s;
+    }
+    .chip.done  { border-color: var(--success-border); color: var(--success); background: var(--success-bg); }
+    .chip.active{ border-color: var(--accent-border);  color: var(--accent);  background: var(--accent-bg); font-weight: 600; }
+    .chip.spell { border-color: var(--accent-border);  color: var(--accent);  font-style: italic; opacity: .8; }
+
+    .prog-bg { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 9px 0 5px; }
+    .prog-fill { height: 100%; background: var(--ink); border-radius: 2px; width: 0%; transition: width .4s cubic-bezier(.25,1,.5,1); }
+    .prog-stats { display: flex; justify-content: space-between; font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--text-3); }
+
+    /* Speed */
+    .speed-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .speed-cur {
+      font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+      color: var(--text-2); background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px;
+    }
+
+    .speed-bars { display: flex; align-items: flex-end; gap: 3px; height: 38px; margin-bottom: 11px; }
+    .spbar { flex: 1; border-radius: 3px 3px 0 0; background: var(--surface3); transition: background .12s; }
+    .spbar.lit { background: var(--ink); }
+
+    input[type=range] {
+      width: 100%; appearance: none; height: 2px;
+      background: var(--border-md); border-radius: 2px; outline: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--ink); cursor: pointer;
+      border: 2.5px solid var(--surface);
+      box-shadow: 0 0 0 1px var(--border-md), 0 2px 6px rgba(0,0,0,.15);
+    }
+
+    .speed-labels { display: flex; justify-content: space-between; font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--text-3); margin-top: 5px; }
+
+    .btn-apply {
+      float: right; margin-top: 11px;
+      padding: 8px 16px; font-size: 12px; font-family: 'Syne', sans-serif; font-weight: 600;
+      border-radius: var(--r); border: 1px solid var(--border-md);
+      background: var(--surface); color: var(--text); cursor: pointer; transition: all .15s;
+    }
+    .btn-apply:hover { background: var(--surface2); transform: translateY(-1px); }
+
+    /* ══ CENTER — AVATAR ══════════════════════════════════════ */
+    .center {
+      display: flex; flex-direction: column;
+      background: var(--bg); overflow: hidden;
+    }
+
+    .av-bar {
+      height: 46px; background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .av-bar-title {
+      font-size: 10px; font-weight: 600; color: var(--text-2);
+      font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .1em;
+    }
+
+    .live-badge {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); transition: background .2s; }
+    .live-dot.on { background: var(--success); animation: blink 1.2s infinite; }
+    .live-text { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text-2); letter-spacing: .06em; }
+
+    /* Avatar body — capped height so avatar doesn't overflow */
+    .av-body {
+      flex: 1;
+      min-height: 0;
+      max-height: calc(100vh - 54px - 46px - 32px);
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    .av-frame {
+      width: 100%;
+      height: 100%;
+      background: var(--surface);
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* subtle dot-grid behind avatar */
+    .av-frame::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none; z-index: 0; opacity: .6;
+    }
+
+    .CWASAPanel.av0 {
+      position: absolute; inset: 0;
+      width: 100% !important; height: 100% !important;
+      display: block; z-index: 1;
+    }
+    .CWASAPanel td:first-child { display: none !important; }
+    .CWASAPanel table { width: 100% !important; height: 100% !important; }
+    .CWASAPanel canvas,
+    .CWASAPanel object,
+    .CWASAPanel embed { width: 100% !important; height: 100% !important; }
+    .CWASAPanel canvas { background: var(--surface) !important; }
+
+    /* ══ RIGHT — EMOTION SIDEBAR ══════════════════════════════ */
+    .emotion-sidebar {
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+
+    .esb-hd {
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .esb-hd-title {
+      font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 500;
+      letter-spacing: .13em; text-transform: uppercase; color: var(--text-3);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .esb-hd-title::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+    /* Big emotion display */
+    .emotion-display {
+      padding: 16px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+
+    .em-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 16px;
+      display: flex; align-items: center; gap: 14px;
+      transition: all .3s;
+    }
+
+    .em-emoji-wrap {
+      width: 52px; height: 52px; flex-shrink: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; transition: all .3s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .em-info { flex: 1; min-width: 0; }
+    .em-label { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -.03em; margin-bottom: 2px; }
+    .em-sub   { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text-3); }
+
+    .em-conf-wrap { margin-top: 10px; }
+    .em-conf-lbl  { font-size: 9px; font-family: 'DM Mono', monospace; color: var(--text-3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
+    .em-conf-bg   { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .em-conf-fill { height: 100%; border-radius: 2px; width: 0%; background: var(--ink); transition: width .5s ease; }
+
+    /* History list */
+    .em-history { flex: 1; overflow-y: auto; padding: 14px 16px; min-height: 0; }
+    .em-history::-webkit-scrollbar { width: 2px; }
+    .em-history::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+
+    .his-title { font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    .his-empty { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; text-align: center; margin-top: 20px; }
+
+    .his-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+    }
+    .his-item:last-child { border-bottom: none; }
+    .his-ico {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .his-lbl  { font-size: 12.5px; font-weight: 600; color: var(--text); font-family: 'Syne', sans-serif; }
+    .his-time { font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--text-3); margin-top: 1px; }
+
+    /* Bottom stats */
+    .esb-stats {
+      border-top: 1px solid var(--border);
+      padding: 12px 16px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .ss { display: flex; justify-content: space-between; align-items: center; }
+    .ss .k { font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--text-3); text-transform: uppercase; letter-spacing: .1em; }
+    .ss .v { font-size: 14px; font-weight: 700; color: var(--text); font-family: 'Syne', sans-serif; letter-spacing: -.02em; }
+    .ss-div { height: 1px; background: var(--border); }
+
+    /* ══ TOAST ════════════════════════════════════════════════ */
+    .toast {
+      position: fixed; bottom: 18px; right: 18px;
+      background: var(--ink); color: #fff;
+      border-radius: var(--r-lg); padding: 10px 16px;
+      font-size: 12.5px; z-index: 999; font-family: 'Syne', sans-serif; font-weight: 500;
+      transform: translateY(60px); opacity: 0;
+      transition: all .28s cubic-bezier(.34,1.56,.64,1);
+      max-width: 280px; pointer-events: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toast::before { content:''; width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.45); flex-shrink:0; }
+    .toast.show    { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error   { background: var(--danger); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+  <!-- ══ HEADER ════════════════════════════════════════════ -->
+  <header>
+    <div class="logo">🤟</div>
+    <div>
+      <div class="hd-title">BDSL Translator</div>
+      <div class="hd-sub">Bangla Sign Language </div>
+    </div>
+    <div class="hd-pill">
+      <div class="hd-dot" id="headerDot"></div>
+      <span id="headerStatus">Idle</span>
+    </div>
+    <div class="hd-badge">v2.0</div>
+  </header>
+
+  <!-- ══ MAIN ══════════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- ── LEFT ──────────────────────────────────────────── -->
+    <div class="left">
+
+      <div class="psec">
+        <div class="slabel">Input</div>
+        <div class="input-wrap">
+          <textarea id="txt" maxlength="500"
+            placeholder="বাংলা বাক্য লিখুন অথবা voice input দিন…"
+            oninput="updateCharCount(this)"></textarea>
+          <span class="char-float" id="charCount">0 / 500</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btn">
+            <svg width="9" height="9" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+            Play
+          </button>
+          <button class="btn" id="voiceBtn">
+            <svg width="10" height="10" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/><path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5z"/></svg>
+            <span id="voiceBtnText">Voice</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="slabel">Status</div>
+        <div class="stat-row">
+          <div class="stat" id="statState">
+            <div class="lbl">State</div>
+            <div class="val" id="statusVal">Ready</div>
+          </div>
+          <div class="stat" id="statTense">
+            <div class="lbl">Tense</div>
+            <div class="val" id="tenseVal">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="slabel">Now Playing</div>
+        <div class="now-row" id="nowRow">
+          <div class="now-dot" id="nowDot"></div>
+          <span class="now-word" id="playingWord">—</span>
+          <span class="now-tag" id="playingMethod"></span>
+        </div>
+      </div>
+
+      <div class="psec" id="progressSection" style="display:none">
+        <div class="slabel">Words</div>
+        <div class="chips" id="wordChips"></div>
+        <div class="prog-bg"><div class="prog-fill" id="progressFill"></div></div>
+        <div class="prog-stats">
+          <span id="progressText">0 / 0 signs</span>
+          <span id="progressPct">0%</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="speed-hd">
+          <div class="slabel" style="margin:0">Playback Speed</div>
+          <div class="speed-cur" id="speedDisplay">5 / 10</div>
+        </div>
+        <div class="speed-bars" id="speedBars"></div>
+        <input type="range" id="speedRange" min="1" max="10" value="5" step="1" oninput="onSpeedInput(this.value)">
+        <div class="speed-labels"><span>Slow</span><span>Fast</span></div>
+        <button class="btn-apply" id="speedBtn">Apply Speed</button>
+        <div style="clear:both"></div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- ── CENTER: AVATAR ─────────────────────────────────── -->
+    <div class="center">
+      <div class="av-bar">
+        <span class="av-bar-title">Sign Avatar</span>
+        <div class="live-badge">
+          <div class="live-dot" id="liveDot"></div>
+          <span class="live-text" id="liveText">IDLE</span>
+        </div>
+      </div>
+      <div class="av-body">
+        <div class="av-frame">
+          <div class="CWASAPanel av0"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT: EMOTION SIDEBAR ─────────────────────────── -->
+    <div class="emotion-sidebar">
+
+      <div class="esb-hd">
+        <div class="esb-hd-title">Emotion Analysis</div>
+      </div>
+
+      <div class="emotion-display">
+        <div class="em-card" id="emCard">
+          <div class="em-emoji-wrap" id="emEmojiWrap">
+            <span id="emEmoji">😐</span>
+          </div>
+          <div class="em-info">
+            <div class="em-label" id="emLabel">Neutral</div>
+            <div class="em-sub"  id="emSub">Awaiting voice input</div>
+            <div class="em-conf-wrap">
+              <div class="em-conf-lbl">Confidence</div>
+              <div class="em-conf-bg">
+                <div class="em-conf-fill" id="emConfFill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="em-history">
+        <div class="his-title">History</div>
+        <div id="emotionHistory">
+          <div class="his-empty">No detections yet</div>
+        </div>
+      </div>
+
+      <div class="esb-stats">
+        <div class="ss"><span class="k">Signs played</span><span class="v" id="infoSigns">—</span></div>
+        <div class="ss-div"></div>
+        <div class="ss"><span class="k">Spelled</span><span class="v" id="infoSpelled">—</span></div>
+      </div>
+
+    </div><!-- /emotion-sidebar -->
+
+  </div><!-- /main -->
+
+  </div><!-- /app-shell -->
+
+  <div class="toast" id="toast"></div>
+
+  <script src="{% static 'js/allcsa.js' %}"></script>
+  <script>
+    CWASA.init({ useClientConfig: true });
+    CWASA.SignURLBase = window.location.origin + "/sigml/word/";
+
+    // ── DOM refs ──────────────────────────────────────────────
+    const btn           = document.getElementById("btn");
+    const voiceBtn      = document.getElementById("voiceBtn");
+    const voiceBtnText  = document.getElementById("voiceBtnText");
+    const txt           = document.getElementById("txt");
+    const speedBtn      = document.getElementById("speedBtn");
+    const speedRange    = document.getElementById("speedRange");
+    const statusVal     = document.getElementById("statusVal");
+    const tenseVal      = document.getElementById("tenseVal");
+    const nowDot        = document.getElementById("nowDot");
+    const nowRow        = document.getElementById("nowRow");
+    const playingWord   = document.getElementById("playingWord");
+    const playingMethod = document.getElementById("playingMethod");
+    const progressFill  = document.getElementById("progressFill");
+    const progressText  = document.getElementById("progressText");
+    const progressPct   = document.getElementById("progressPct");
+    const progressSec   = document.getElementById("progressSection");
+    const wordChips     = document.getElementById("wordChips");
+    const liveDot       = document.getElementById("liveDot");
+    const liveText      = document.getElementById("liveText");
+    const toast         = document.getElementById("toast");
+    const speedDisplay  = document.getElementById("speedDisplay");
+    const speedBars     = document.getElementById("speedBars");
+    const emEmoji       = document.getElementById("emEmoji");
+    const emEmojiWrap   = document.getElementById("emEmojiWrap");
+    const emLabel       = document.getElementById("emLabel");
+    const emSub         = document.getElementById("emSub");
+    const emConfFill    = document.getElementById("emConfFill");
+    const emotionHistory= document.getElementById("emotionHistory");
+    const infoSigns     = document.getElementById("infoSigns");
+    const infoSpelled   = document.getElementById("infoSpelled");
+    const headerDot     = document.getElementById("headerDot");
+    const headerStatus  = document.getElementById("headerStatus");
+
+    let mediaRecorder = null, audioChunks = [], mediaStream = null;
+    let currentEmotion = "", isListening = false;
+    let emotionLog = [];
+
+    // ── Emotion map ───────────────────────────────────────────
+    const EMOTION_MAP = {
+      "happy":    { emoji: "😊", label: "Happy",    color: "#d97706" },
+      "sad":      { emoji: "😢", label: "Sad",      color: "#1a5cff" },
+      "angry":    { emoji: "😠", label: "Angry",    color: "#cc2c2c" },
+      "fear":     { emoji: "😨", label: "Fear",     color: "#7c3aed" },
+      "surprise": { emoji: "😲", label: "Surprise", color: "#0a8a5f" },
+      "disgust":  { emoji: "🤢", label: "Disgust",  color: "#65a30d" },
+      "neutral":  { emoji: "😐", label: "Neutral",  color: "#6b6b6b" },
+    };
+
+    function getEmInfo(raw) {
+      return EMOTION_MAP[(raw || "").toLowerCase().trim()]
+          || { emoji: "❓", label: raw || "Unknown", color: "#6b6b6b" };
+    }
+
+    function setEmotionDisplay(raw) {
+      const info = getEmInfo(raw);
+      emEmoji.textContent             = info.emoji;
+      emLabel.textContent             = info.label;
+      emSub.textContent               = "Detected via voice";
+      emConfFill.style.width          = "82%";
+      emConfFill.style.background     = info.color;
+      emEmojiWrap.style.borderColor   = info.color + "40";
+      emEmojiWrap.style.background    = info.color + "12";
+
+      const now = new Date();
+      emotionLog.unshift({ info, time: now.toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" }) });
+      if (emotionLog.length > 8) emotionLog.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      if (!emotionLog.length) {
+        emotionHistory.innerHTML = '<div class="his-empty">No detections yet</div>';
+        return;
+      }
+      emotionHistory.innerHTML = emotionLog.map(e => `
+        <div class="his-item">
+          <div class="his-ico">${e.info.emoji}</div>
+          <div>
+            <div class="his-lbl">${e.info.label}</div>
+            <div class="his-time">${e.time}</div>
+          </div>
+        </div>`).join("");
+    }
+
+    // ── Speed bars ────────────────────────────────────────────
+    const BAR_H = [10,13,17,21,25,29,33,36,38,40];
+
+    function buildSpeedBars(val) {
+      speedBars.innerHTML = "";
+      for (let i = 0; i < 10; i++) {
+        const b = document.createElement("div");
+        b.className = "spbar" + (i < val ? " lit" : "");
+        b.style.height = BAR_H[i] + "px";
+        speedBars.appendChild(b);
+      }
+    }
+
+    function onSpeedInput(val) {
+      val = parseInt(val);
+      speedDisplay.textContent = val + " / 10";
+      buildSpeedBars(val);
+    }
+
+    buildSpeedBars(5);
+
+    speedBtn.addEventListener("click", () => {
+      const v = parseInt(speedRange.value);
+      if (typeof CWASA.setSpeed === "function") CWASA.setSpeed(v);
+      showToast("Speed set to " + v);
+    });
+
+    // ── Helpers ───────────────────────────────────────────────
+    function updateCharCount(el) {
+      document.getElementById("charCount").textContent = el.value.length + " / " + el.maxLength;
+    }
+
+    function setHeaderStatus(text, active) {
+      headerStatus.textContent = text;
+      headerDot.className = "hd-dot" + (active ? " on" : "");
+    }
+
+    function setStatus(text) {
+      statusVal.textContent = text;
+      const isActive = ["Playing","Processing…","Speak now…","Detecting emotion…"].includes(text);
+      const isDone   = text === "Finished";
+      statusVal.className = "val" + (isActive ? " vplay" : isDone ? " vdone" : "");
+      document.getElementById("statState").className = "stat" + (isActive ? " st-active" : isDone ? " st-done" : "");
+      setHeaderStatus(text, isActive || isDone);
+    }
+
+    function setPlaying(word, method) {
+      playingWord.textContent   = word || "—";
+      playingMethod.textContent = method || "";
+      const isSign  = method === "sign";
+      const isSpell = method === "spelling";
+      playingMethod.className = "now-tag" + (isSign ? " t-sign" : isSpell ? " t-spell" : "");
+      nowDot.className  = word ? "now-dot on" : "now-dot";
+      nowRow.className  = word ? "now-row active" : "now-row";
+      liveDot.className = word ? "live-dot on" : "live-dot";
+      liveText.textContent = word ? "SIGNING" : "IDLE";
+    }
+
+    function setProgress(current, total) {
+      const pct = total ? Math.round((current / total) * 100) : 0;
+      progressFill.style.width = pct + "%";
+      progressText.textContent = current + " / " + total + " signs";
+      progressPct.textContent  = pct + "%";
+    }
+
+    function showToast(msg, type = "") {
+      toast.textContent = msg;
+      toast.className   = "toast show " + type;
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.className = "toast", 3000);
+    }
+
+    function buildChips(words) {
+      progressSec.style.display = "block";
+      wordChips.innerHTML = words.map((w, i) => `<span class="chip" id="chip-${i}">${w}</span>`).join("");
+    }
+
+    function activateChip(i, isSpell) {
+      document.querySelectorAll(".chip").forEach((el, idx) => {
+        if (idx < i)        el.className = "chip done";
+        else if (idx === i) el.className = "chip active" + (isSpell ? " spell" : "");
+        else                el.className = "chip";
+      });
+    }
+
+    async function fileExists(url) {
+      try { const r = await fetch(url, { method: "HEAD" }); return r.ok; }
+      catch { return false; }
+    }
+
+    async function playSigml(url) {
+      await CWASA.playSiGMLURL(url, 0);
+      await new Promise(r => setTimeout(r, 800));
+    }
+
+    // ── Emotion detection ─────────────────────────────────────
+    async function uploadAudioForEmotion(blob) {
+      const fd = new FormData();
+      fd.append("audio", blob, "recorded_audio.webm");
+      try {
+        setStatus("Detecting emotion…");
+        const res  = await fetch("/detect-emotion/", { method: "POST", body: fd });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed");
+        currentEmotion = data.emotion || "";
+        setEmotionDisplay(currentEmotion);
+        return currentEmotion;
+      } catch (e) { console.error(e); return ""; }
+    }
+
+    // ── Play sentence ─────────────────────────────────────────
+    async function playSentence() {
+      const raw = txt.value.trim();
+      if (!raw) { showToast("Please enter some text first", "error"); return; }
+
+      btn.disabled = true;
+      setStatus("Processing…");
+      infoSigns.textContent   = "—";
+      infoSpelled.textContent = "—";
+
+      try {
+        const res  = await fetch("/detect/?text=" + encodeURIComponent(raw));
+        const data = await res.json();
+        const words = data.words || [];
+        if (data.tense) tenseVal.textContent = data.tense;
+        if (!words.length) { showToast("No words found", "error"); return; }
+
+        buildChips(words);
+        setProgress(0, words.length);
+        setStatus("Playing");
+        showToast("Playing " + words.length + " sign" + (words.length > 1 ? "s" : ""), "success");
+
+        let signs = 0, spelled = 0;
+
+        for (let i = 0; i < words.length; i++) {
+          const word    = words[i];
+          const wordUrl = window.location.origin + "/sigml/word/" + encodeURIComponent(word + ".sigml");
+          const exists  = await fileExists(wordUrl);
+
+          activateChip(i, !exists);
+          setPlaying(word, exists ? "sign" : "spelling");
+          setProgress(i + 1, words.length);
+
+          if (exists) {
+            signs++;
+            await playSigml(wordUrl);
+          } else {
+            spelled++;
+            for (const char of word) {
+              const charUrl = window.location.origin + "/sigml/char/" + encodeURIComponent(char + ".sigml");
+              if (await fileExists(charUrl)) await playSigml(charUrl);
+            }
+          }
+        }
+
+        infoSigns.textContent   = signs;
+        infoSpelled.textContent = spelled;
+        document.querySelectorAll(".chip").forEach(el => el.className = "chip done");
+        setPlaying("", "");
+        setStatus("Finished");
+        showToast("Playback complete", "success");
+
+      } catch (err) {
+        console.error(err);
+        setStatus("Error");
+        showToast("Something went wrong", "error");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener("click", playSentence);
+
+    // ── Voice input ───────────────────────────────────────────
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SR) {
+      voiceBtn.disabled = true;
+      voiceBtnText.textContent = "Not supported";
+    } else {
+      const recognition = new SR();
+      recognition.lang = "bn-BD";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+      recognition.maxAlternatives = 1;
+
+      voiceBtn.addEventListener("click", async () => {
+        if (isListening) return;
+        try {
+          currentEmotion = "";
+          mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioChunks = [];
+          mediaRecorder = new MediaRecorder(mediaStream);
+          mediaRecorder.ondataavailable = e => { if (e.data?.size > 0) audioChunks.push(e.data); };
+          mediaRecorder.onstop = async () => {
+            try {
+              const blob = new Blob(audioChunks, { type: "audio/webm" });
+              if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+              await uploadAudioForEmotion(blob);
+              await playSentence();
+            } catch (err) { console.error(err); }
+          };
+          mediaRecorder.start();
+          recognition.start();
+          isListening = true;
+          voiceBtn.classList.add("listening");
+          voiceBtnText.textContent = "Listening…";
+          setStatus("Speak now…");
+        } catch (err) {
+          console.error(err);
+          setStatus("Mic error");
+          isListening = false;
+        }
+      });
+
+      recognition.onresult = e => {
+        txt.value = e.results[0][0].transcript.trim();
+        updateCharCount(txt);
+        setStatus("Voice captured");
+      };
+
+      recognition.onerror = e => {
+        if (mediaRecorder?.state !== "inactive") mediaRecorder.stop();
+        isListening = false;
+        voiceBtn.classList.remove("listening");
+        voiceBtnText.textContent = "Voice";
+        const msgs = {
+          network:          "Network error",
+          "not-allowed":    "Mic permission denied",
+          "no-speech":      "No speech detected",
+          "audio-capture":  "No microphone found"
+        };
+        setStatus(msgs[e.error] || "Voice error");
+        showToast(msgs[e.error] || "Voice error", "error");
+      };
+
+      recognition.onend = () => {
+        if (mediaRecorder?.state !== "inactive") mediaRecorder.stop();
+        isListening = false;
+        voiceBtn.classList.remove("listening");
+        voiceBtnText.textContent = "Voice";
+      };
+    }
+  </script>
+</body>
+</html>

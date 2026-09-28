@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="আমার">                <hamnosys_nonmanual/>                <hamnosys_manual>                        <hamflathand/>                        <hamextfingerul/>                        <hampalml/>                        <hamchest/>                        <hamtouch/>                </hamnosys_manual>        </hns_sign>
+</sigml>

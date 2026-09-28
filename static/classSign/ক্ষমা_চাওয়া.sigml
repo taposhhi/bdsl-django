@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="ক্ষমা চাওয়া">
+<hamnosys_nonmanual>
+<hnm_head tag="NF"/>\t<hnm_head tag="NF"/>\t</hamnosys_nonmanual>
+<hamnosys_manual>
+<hamsymmpar/>
+<hamflathand/>
+<hamextfingeru/>
+<hampalml/>
+<hamparbegin/>
+<hamfingerpad/>
+<hammiddlefinger/>
+<hamplus/>
+<hamfingerpad/>
+<hammiddlefinger/>
+<hamparend/>
+<hamtouch/>
+<hamneck/>
+</hamnosys_manual>
+</hns_sign>
+</sigml>

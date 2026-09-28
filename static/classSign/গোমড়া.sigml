@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="গোমড়া">        <hamnosys_nonmanual>            <hnm_head tag="SL"/>\t            <hnm_head tag="SL"/>\t            <hnm_head tag="SL"/>\t        </hamnosys_nonmanual>        <hamnosys_manual>            <hamfinger2345/>            <hamthumboutmod/>            <hambetween/>            <hamfinger2345/>            <hamthumboutmod/>            <hamfingerhookmod/>            <hamextfingeru/>            <hampalmu/>            <hamneck/>            <hambetween/>            <hamlips/>            <hamparbegin/>            <hammovel/>            <hamsmallmod/>            <hammovel/>            <hamsmallmod/>            <hamparend/>        </hamnosys_manual>
+</hns_sign>
+</sigml>

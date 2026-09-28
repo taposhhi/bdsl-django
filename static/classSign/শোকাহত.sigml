@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigml>
+<hns_sign gloss="শোকাহত">
+<hamnosys_manual>    <hamsymmpar/>    <hamflathand/>    <hamthumboutmod/>    <hamextfingero/>    <hampalml/>    <hamreplace/>    <hamparbegin/>    <hampalmu/>    <hamplus/>    <hampalmd/>    <hamparend/>
+</hamnosys_manual>
+<hamnosys_nonmanual>    <hnm_head tag="TR"/>    <hnm_head tag="TR"/>\t    <hnm_head tag="TR"/>\t</hamnosys_nonmanual>
+</hns_sign>
+</sigml>

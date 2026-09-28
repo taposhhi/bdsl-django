@@ -1,0 +1,37 @@
+
+<hns_sign gloss="help - me">
+	<hamnosys_nonmanual>
+	</hamnosys_nonmanual>
+	<hamnosys_manual>
+
+		<hamparbegin/>
+		<hampinchall/>
+			<hamfingerhookmod/>
+		<hamplus/>
+		<hamfinger2/>
+			<hamthumbacrossmod/>
+		<hamparend/>
+
+
+
+		<hamparbegin/>
+		<hamextfingerl/>
+		<hampalml/>
+		<hamplus/>
+		<hamextfingeror/>
+		<hampalmd/>
+		<hamparend/>
+
+
+
+
+
+		<hamparbegin/>
+		<hamthumbside/>
+		<hamplus/>
+		<hammiddlefinger/>
+		<hamparend/>
+
+
+	</hamnosys_manual>
+</hns_sign>
